@@ -27,5 +27,13 @@ class Flask_Tests(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
 
 
+    def test_lookup(self):
+        """Test log page"""
+        test = app.test_client(self)
+        result = test.get('/lookup')
+        self.assertEqual(result.status_code, 200)
+
+
+
 if __name__ == "__main__":
     unittest.main()
