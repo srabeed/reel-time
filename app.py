@@ -8,10 +8,14 @@ from mysql.connector import errorcode
 app = Flask(__name__)
 
 def get_db_creds():
-    db = "reel_time_db"
-    username = "myadmin"
-    password = "Reeltime!"
-    hostname = "reel-time-db.chr9q1gt6nxw.us-east-1.rds.amazonaws.com"
+    # db = "reel_time_db"
+    # username = "myadmin"
+    # password = "Reeltime!"
+    # hostname = "reel-time-db.chr9q1gt6nxw.us-east-1.rds.amazonaws.com"
+    db = os.environ.get("DB", None) or os.environ.get("database", None)
+    username = os.environ.get("USER", None) or os.environ.get("username", None)
+    password = os.environ.get("PASSWORD", None) or os.environ.get("password", None)
+    hostname = os.environ.get("HOST", None) or os.environ.get("dbhost", None)
     port = 3306
     return db, username, password, hostname, port
 

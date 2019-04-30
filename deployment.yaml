@@ -1,0 +1,31 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: Reel-Time-Deployment
+  labels:
+    app: Reel-Time
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: Reel-Time
+  template:
+    metadata:
+      labels:
+        app: Reel-Time
+    spec:
+      containers:
+      - name: Reel-Time
+        image: Reel-Time:latest
+        ports:
+        - containerPort: 5000
+        env:
+          - name: "PASSWORD"
+            value: Reeltime!
+          - name: "DB"
+            value: reel_time_db
+          - name: "HOST"
+            value: reel-time-db.chr9q1gt6nxw.us-east-1.rds.amazonaws.com
+          - name: "USER"
+            value: myadmin
+
