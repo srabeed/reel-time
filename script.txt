@@ -1,0 +1,15 @@
+- If you want to run the app locally and test/debug (doesn't work right now)
+docker run -it -v $(PWD):/usr/reel-time -w /usr/reel-time gpdowning/python
+
+
+- If you want to fully test the application and how it would be be like when deployed:
+docker build reeltime-app:latest .
+docker run -d -p 5000:5000 reeltime-app 
+
+- To make sure it's running run:
+docker ps -a 
+
+- To view the app go to this address (check both in case):
+http://192.168.99.100:5000
+OR 
+localhost:5000
