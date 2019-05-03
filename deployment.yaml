@@ -1,22 +1,22 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: Reel-Time-Deployment
+  name: reeltimedeployment
   labels:
-    app: Reel-Time
+    app: reeltime
 spec:
-  replicas: 1 
+  replicas: 1
   selector:
     matchLabels:
-      app: Reel-Time
+      app: reeltime
   template:
     metadata:
       labels:
-        app: Reel-Time
+        app: reeltime
     spec:
       containers:
-      - name: Reel-Time
-        image: Reel-Time:latest
+      - name: reeltime-container
+        image: reeltimeregistry2.azurecr.io/reel-time-image:latest
         ports:
         - containerPort: 5000
         env:
@@ -28,4 +28,5 @@ spec:
             value: reel-time-db.chr9q1gt6nxw.us-east-1.rds.amazonaws.com
           - name: "USER"
             value: myadmin
-
+      imagePullSecrets:
+        - name: myregistrykey
