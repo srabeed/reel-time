@@ -1,10 +1,6 @@
 #bodycenter {
-    margin: auto;
-	width: 19%;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 10px;
-	display: block;
+    justify-content: space-evenly;
+	display: flex;
 }
 
 #footer{

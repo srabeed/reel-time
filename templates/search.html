@@ -1,0 +1,75 @@
+<html>
+<head>
+  <meta charset='UTF-8'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/homepagestyle.css') }}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ 
+
+</head>
+<body>
+    
+    <div id="bodycenter">
+      <a href="/"><img src="{{ url_for('static', filename='images/reeltimelogo.png') }}"></a>
+    </div>
+
+  
+  <div id="form">
+        <div id="result">
+                <p>Hottest Location:</p>
+                <p>{{ message }}</p>
+                <p>{{result}}</p>
+              </div>
+      <form action="search_species" method="get">
+          <h1>Search for target species</h1>
+          <h3>Greater area:
+            <select id="area" name = "area">
+            <option selected value="base">- Please select below -</option>
+            <option value="Houston">Houston</option>
+            <option value="Dallas">Dallas</option>
+            <option value="Austin">Austin</option>
+        </select></h3>
+
+        <h3>Fish Species: 
+        <select id="species" name = "species">
+            <option name ="Largemouth bass">Largemouth bass</option>
+            <option name ="Smallmouth bass">Smallmouth bass</option>
+            <option name ="Guadalupe bass">Guadalupe bass</option>
+            <option name ="White bass">White bass</option>
+            <option name ="Channel catfish">Channel catfish</option>
+            <option name ="Blue catfish">Blue catfish</option>
+            <option name ="Bluegill">Bluegill</option>
+            <option name ="Green Sunfish">Green Sunfish</option>
+            <option name ="Longear Sunfish">Longear Sunfish</option>
+            <option name ="Carp">Carp</option>
+            <option name ="Alligator Gar">Alligator Gar</option>
+            <option name ="Spotted Gar">Spotted Gar</option>
+            <option name ="Redhorse Sucker">Redhorse Sucker</option>
+        </select></h3>
+
+        
+        <br>
+  
+        <input type="submit" value="Submit">
+    </form>
+  </div>
+
+  <div id="googleMap" style="width:400px;height:400px;"></div>
+
+<script>
+function myMap() {
+var mapProp= {
+  center:new google.maps.LatLng(30.2672, -97.7431),
+  zoom:5,
+};
+var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS5AWR2Soxqmhgehvsy8vm38W3YV41RX0&callback=myMap"></script>
+
+
+</body>
+</html>
