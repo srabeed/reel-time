@@ -7,16 +7,16 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-  <script>
+ <!--  <script>
     $(function() {
 
       $("#text-one").change(function() {
-        $("#text-two").load("textdata/" + $(this).val() + ".txt");
+        $("#text-two").load("templates/textdata/" + $(this).val() + ".html");
       });
 
     });
   </script>
-
+ -->
 </head>
 <body>
   
@@ -47,8 +47,24 @@
         </select></h3>
 
         <h3>Specific location:
-        <select id="text-two">
+        <select id="text-two" name = "location">
             <option>Please choose from above</option>
+            <option value="Lake Houston">Lake Houston</option>
+            <option value="Sheldon Lake">Sheldon Lake</option>
+            <option value="Buffalo Bayou">Buffalo Bayou</option>
+            <option value="Clear Lake">Clear Lake</option>
+            <option value="Spring Creek">Spring Creek</option>  
+            <option value="Grapevine Lake">Grapevine Lake</option>
+            <option value="Lewisville Lake">Lewisville Lake</option>
+            <option value="Joe Pool Lake">Joe Pool Lake</option>
+            <option value="Lake Ray Hubbard">Lake Ray Hubbard</option>
+            <option value="Cedar Creek Reservoir">Cedar Creek Reservoir</option>
+            <option value="Colorado River">Colorado River</option>
+            <option value="Lady Bird Lake">Lady Bird Lake</option>
+            <option value="Lake Austin">Lake Austin</option>
+            <option value="Shoal Creek">Shoal Creek</option>
+            <option value="Barton Creek">Barton Creek</option>
+            <option value="Mueller Lake">Mueller Lake</option>
         </select></h3>
 
 

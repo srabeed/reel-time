@@ -18,10 +18,7 @@
   
   <div id="form">
         <div id="result">
-                <p>Hottest Location:</p>
-                <p>{{ message }}</p>
-                <p>{{result}}</p>
-              </div>
+                
       <form action="search_species" method="get">
           <h1>Search for target species</h1>
           <h3>Greater area:
@@ -52,21 +49,52 @@
         
         <br>
   
-        <input type="submit" value="Submit">
+        <input id="zz"type="submit" value="Submit" onclick="myMap()">
     </form>
   </div>
 
-  <div id="googleMap" style="width:400px;height:400px;"></div>
+  <p>Hottest Spot:</p>
+                <p>{{ message }}</p>
+                <p>{{result}}</p>
+              </div>
+
+  <div id="googleMap" style="width:70%;height:400px;margin: auto;margin-top: 30px;"></div>
+
 
 <script>
+
+
 function myMap() {
+
+
+// var temp = {{data}}
+// console.log(temp)
+var latVar
+var lngVar
+{% if data is defined %}
+  latVar = {{data.lat}}
+  lngVar = {{data.lng}}
+{% else %}
+  latVar = 30.2672
+  lngVar = -97.7431 
+{% endif %}
+
+
+
 var mapProp= {
-  center:new google.maps.LatLng(30.2672, -97.7431),
-  zoom:5,
+  center:new google.maps.LatLng(latVar, lngVar),
+  zoom:9,
 };
 var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+var currMarker = {lat: latVar, lng: lngVar};
+// currMarker = {lat: 30.2672, lng: -97.7431};
+var marker = new google.maps.Marker({position: currMarker, map: map});
 }
+
+
 </script>
+
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS5AWR2Soxqmhgehvsy8vm38W3YV41RX0&callback=myMap"></script>
 

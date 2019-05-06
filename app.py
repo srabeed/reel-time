@@ -8,14 +8,14 @@ from mysql.connector import errorcode
 app = Flask(__name__)
 
 def get_db_creds():
-    # db = "reel_time_db"
-    # username = "myadmin"
-    # password = "Reeltime!"
-    # hostname = "reel-time-db.chr9q1gt6nxw.us-east-1.rds.amazonaws.com"
-    db = os.environ.get("DB", None) or os.environ.get("database", None)
-    username = os.environ.get("USER", None) or os.environ.get("username", None)
-    password = os.environ.get("PASSWORD", None) or os.environ.get("password", None)
-    hostname = os.environ.get("HOST", None) or os.environ.get("dbhost", None)
+    db = "reel_time_db"
+    username = "myadmin"
+    password = "Reeltime!"
+    hostname = "reel-time-db.chr9q1gt6nxw.us-east-1.rds.amazonaws.com"
+    # db = os.environ.get("DB", None) or os.environ.get("database", None)
+    # username = os.environ.get("USER", None) or os.environ.get("username", None)
+    # password = os.environ.get("PASSWORD", None) or os.environ.get("password", None)
+    # hostname = os.environ.get("HOST", None) or os.environ.get("dbhost", None)
     port = 3306
     return db, username, password, hostname, port
 
@@ -57,12 +57,12 @@ waters = (
     Water('Lewisville Lake',       33.1636987, -97.0695049),
     Water('Joe Pool Lake',         32.5916823, -97.0961563),
     Water('Lake Ray Hubbard',      32.9027607, -96.66767),
-    Water('Cedar Creek Reservoir', 32.2969884, -96.2492798)
+    Water('Cedar Creek Reservoir', 32.2969884, -96.2492798),
     Water('Lake Houston',        30.0002148,-95.2473016),
     Water('Sheldon Lake',       29.8672648,-95.193382),
     Water('Buffalo Bayou',         29.7394345,-95.4612953),
     Water('Clear Lake',      29.5838715,-95.1430026),
-    Water('Spring Creek', 30.0939521,-95.6261575)
+    Water('Spring Creek', 30.0939521,-95.6261575),
     Water('Colorado River',        30.6424196,-101.0677113),
     Water('Lady Bird Lake',       30.2689918,-97.7683175),
     Water('Lake Austin',         30.3436219,-97.9221555),
@@ -72,6 +72,31 @@ waters = (
 )
 
 waters_by_name = {water.name: water for water in waters}
+
+class Location:
+    def __init__(self, name, greater):
+        self.name = name
+        self.greater = greater
+locations = {
+    Location('Grapevine Lake',        'Dallas'),
+    Location('Lewisville Lake',       'Dallas'),
+    Location('Joe Pool Lake',         'Dallas'),
+    Location('Lake Ray Hubbard',      'Dallas'),
+    Location('Cedar Creek Reservoir', 'Dallas'),
+    Location('Lake Houston',          'Houston'),
+    Location('Sheldon Lake',          'Houston'),
+    Location('Buffalo Bayou',         'Houston'),
+    Location('Clear Lake',            'Houston'),
+    Location('Spring Creek',          'Houston'),
+    Location('Colorado River',        'Austin'),
+    Location('Lady Bird Lake',        'Austin'),
+    Location('Lake Austin',           'Austin'),
+    Location('Shoal Creek',           'Austin'),
+    Location('Barton Creek',          'Austin'),
+    Location('Mueller Lake',          'Austin')
+}
+
+locations_by_name = {location.name: location for location in locations}
 
 @app.route("/")
 def home():
@@ -107,15 +132,9 @@ def add_to_db():
         species = request.form.get('other_species')
     elif (species != 'Other' and other != ''):
         return render_template('log.html', message="Please enter a valid species.")
-        
-
-    # print "Args:"
-    # print area, "."
-    # print area == 'empty'
-    # print location, "."
-    # print species, "."
-    # print curr_amount, "."
-    # print other, "."
+    loc = locations_by_name.get(location)
+    if(loc.greater != area):
+            return render_template('lookup.html', message ="Location does not exist within area. Please enter a valid location.")
 
     db, username, password, hostname, port = get_db_creds()
 
@@ -138,10 +157,10 @@ def add_to_db():
     if(cur0.rowcount > 0):
         sql = ("UPDATE fishes SET amount = amount + curr_amount WHERE location = '%s' AND species = '%s'" % (location, species))
     else:
-        sql = ("INSERT INTO fishes (area, location, species, amount) VALUES (%s, %s, %s, %s)")
-        val = (area, location, species, curr_amount)
+        sql = ("INSERT INTO fishes (area, location, species, amount) VALUES (%s, %s, %s, %s)" % (area, location, species, curr_amount))
+        # val = (area, location, species, curr_amount)
     try:
-        cur.execute(sql, val)
+        cur.execute(sql)
         cnx.commit()
         return render_template('log.html', message="Catch successfully logged!")
     except Exception as exp:
@@ -171,11 +190,17 @@ def lookup_search():
         cnx = mysql.connector.connect(user=username, password=password,
                                       host=hostname, port=port,
                                       database=db)
+
+    loc = locations_by_name.get(location)
+    if(loc.greater != area):
+            return render_template('lookup.html', message ="Location does not exist within area")
     results = []
     cur = cnx.cursor() 
     sql = ("SELECT * FROM fishes WHERE area = '%s' AND location = '%s'" % (area, location))
     cur.execute(sql)
     for row in cur:
+        
+        
         species = str(row[2])
         amount = (row[3])
         pop = ""
@@ -202,12 +227,12 @@ def search():
 @app.route('/search_species', methods=['GET'])
 def search_species():
     print("Received request.")
-
+    data = {'lat': 30.2672, 'lng': -97.7431}
     area = request.args.get('area')
     species = request.args.get('species')
 
     db, username, password, hostname, port = get_db_creds()
-    
+
     cnx = ''
     try:
         cnx = mysql.connector.connect(user=username, password=password,
@@ -231,9 +256,17 @@ def search_species():
             loc = row[1]
 
     cnx.commit()
+
+    water = waters_by_name.get(loc)
+    if(loc == ""):
+        data = {'lat': 30.2672, 'lng': -97.7431}
+    else:
+        lat = water.lat
+        lng = water.lng
+        data = {'lat': lat, 'lng': lng}
     if (loc == ""):
-        return render_template('search.html', message ="Species not in location")
-    return render_template('search.html', results = loc)
+        return render_template('search.html', message ="Species not in location",data=data)
+    return render_template('search.html', result = loc, data=data)
 
 
 if __name__ == "__main__":
