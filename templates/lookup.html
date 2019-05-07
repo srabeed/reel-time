@@ -6,7 +6,12 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+ <style type="text/css">
+  #heading{
+    font-family: 'Roboto Slab', serif;
+    color: #014979;
+  }
+</style>
  <!--  <script>
     $(function() {
 
@@ -37,8 +42,8 @@
                     {% endfor %}</p>
               </div>
       <form action="lookup_search" method="get">
-          <h1>Location Lookup</h1>
-          <h3>Greater area:
+          <h1 id="heading">Location Lookup</h1>
+          <h3 id="heading">Greater area:
             <select id="text-one" name = "area">
             <option value="base">- Please select below -</option>
             <option value="Houston">Houston</option>
@@ -46,7 +51,7 @@
             <option value="Austin">Austin</option>
         </select></h3>
 
-        <h3>Specific location:
+        <h3 id="heading">Specific location:
         <select id="text-two" name = "location">
             <option>Please choose from above</option>
             <option value="Lake Houston">Lake Houston</option>

@@ -134,7 +134,7 @@ def add_to_db():
         return render_template('log.html', message="Please enter a valid species.")
     loc = locations_by_name.get(location)
     if(loc.greater != area):
-            return render_template('lookup.html', message ="Location does not exist within area. Please enter a valid location.")
+            return render_template('log.html', message ="Location does not exist within area. Please enter a valid location.")
 
     db, username, password, hostname, port = get_db_creds()
 
@@ -248,12 +248,15 @@ def search_species():
     sql = ("SELECT * FROM fishes WHERE area = '%s' AND species = '%s'" % (area, species))
     cur.execute(sql)
     largest_amount = 0
+
     loc = ""
     for row in cur:
         amount = (row[3])
         if(amount > largest_amount):
-            amount = largest_amount
+            largest_amount = amount
             loc = row[1]
+        print(row)
+        print(largest_amount)
 
     cnx.commit()
 
@@ -266,7 +269,7 @@ def search_species():
         data = {'lat': lat, 'lng': lng}
     if (loc == ""):
         return render_template('search.html', message ="Species not in location",data=data)
-    return render_template('search.html', result = loc, data=data)
+    return render_template('search.html', result = "Hottest spot: " + loc, data=data)
 
 
 if __name__ == "__main__":

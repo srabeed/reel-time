@@ -3,6 +3,12 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/homepagestyle.css') }}">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+ <style type="text/css">
+  #heading{
+    font-family: 'Roboto Slab', serif;
+    color: #014979;
+  }
+</style>
 </head>
 <body>
     
@@ -14,8 +20,8 @@
   <div id="form">
       <form action="log_catch" method="post">
           {{ message | safe }}
-          <h1>Log a catch</h1>
-          <h3>Greater area: 
+          <h1 id="heading">Log a catch</h1>
+          <h3 id="heading">Greater area: 
               <select name="area" id="area">
             <option value="">- Please select below -</option>
             <option value="Houston">Houston</option>
@@ -25,7 +31,7 @@
             
         </h3>
           
-        <h3>Specific location: 
+        <h3 id="heading">Specific location: 
             <select name ="location" id="location">
                 <option value="">- Please select below -</option>
                 <option value="Lake Houston">Lake Houston</option>
@@ -47,7 +53,7 @@
             </select>
             </h3>
 
-        <h3>Fish species: 
+        <h3 id="heading">Fish species: 
             <select name ="species" id="species">
             <option value="">- Please select below -</option>
             <option name ="Largemouth bass">Largemouth bass</option>
@@ -69,7 +75,7 @@
         If other:
         <input type="text" name="other_species"></h3>
 
-        <h3>Amount caught: 
+        <h3 id="heading">Amount caught: 
             <input type="int" name="amount">
         </h3>
         
